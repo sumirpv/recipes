@@ -2,4 +2,4 @@ const log = (string) => {
     console.log(string);
 };
 
-export default log;
+export default log   ;
