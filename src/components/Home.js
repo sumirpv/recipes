@@ -1,52 +1,57 @@
 import React from 'react';
 import RecipeList from './recipeList';
 import RecipeDetail from './RecipeDetail';
+import PropTypes from 'prop-types';
 
+class Home extends React.Component {
 
-class Home extends React.Component{
-
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state ={
-            recipes:[],
-            currentRecipe:null,
+        this.state = {
+            currentRecipe: null,
         };
-        this.onRecipeClick = this.onRecipeClick.bind(this);
-    }
-    componentDidMount(){
-       // fetch(`${API_URL}'/v1/recipes`)
-     fetch('http://reactrecipes.herokuapp.com/v1/recipes')
-        .then(res => res.json())
-        .then( (recipes)=> {
-            this.setState({recipes})
-        })
     }
 
-    onRecipeClick(id){
+
+    onRecipeClick(id) {
         fetch(`http://reactrecipes.herokuapp.com/v1/recipes/${id}`)
-        .then(res => res.json())
-        .then( (recipe)=> {
-            this.setState({currentRecipe:recipe})
-        });
-    }
-render(){
-    const {recipes, currentRecipe} = this.state;
-        return(
-        <div>
+            .then(res => res.json())
+            .then((recipe) => {
+                this.setState({ currentRecipe: recipe })
+            });
+    };
+
+
+    render() {
+        const { recipes, favorites } = this.props.state
+        const { currentRecipe } = this.state;
+        return (
+
             <main className="px4 flex">
-            <RecipeList 
-            recipes ={recipes} 
-            style ={{flex: 3}} 
-            onClick={this.onRecipeClick}
-            />
-            <RecipeDetail
-            recipe = {currentRecipe}
-            className="ml4 "
-            style ={{flex: 3}}/>
+                <div style={{ flex: 3 }}>
+                    <h2 className="h2">Recipes</h2>
+                    <RecipeList
+                        recipes={recipes}
+                        favorites={favorites}
+                        style={{ flex: 3 }}
+                        onClick={this.onRecipeClick}
+                        onFavorite={this.props.toggleFavorite}
+                    />
+                </div>
+
+                <RecipeDetail
+                    recipe={currentRecipe}
+                    className="ml4 "
+                    style={{ flex: 3 }} />
             </main>
-        </div>
+
         );
     }
+}
+
+Home.propTypes = {
+    state: PropTypes.object,
+    toggleFavorite: PropTypes.func,
 }
 
 export default Home;

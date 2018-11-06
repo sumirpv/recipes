@@ -1,26 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import RecipeListItem from './RecipeListItem';
 
-
-const RecipeList = (props) => (
-    <div style={props.style}>
-        <h2 className="h2">Recipes</h2>
+const RecipeList = ({
+    style, 
+    favorites, 
+    recipes,
+     ...props,
+    } ) => (
         <ul className="list-reset">
-            {props.recipes.map(recipe => (
-                <li key={recipe.id} 
-                className="py2 border-bottom border-bottom-dashed pointer"
-                onClick={() => props.onClick(recipe.id)}
-                >
-                    <span>{recipe.name}</span>
-                    <span>{recipe.category}</span>
-                </li>
+            {recipes.map(recipe => (
+                <RecipeListItem
+                recipe= {recipe}
+                favorite= { favorites.includes(recipe.id)}
+                {...props}
+                />
             ))}
         </ul>
-    </div>
 );
 
- RecipeList.propTyped = {
-    recipes: PropTypes.object,
+RecipeList.propTyped = {
+    recipe: PropTypes.array,
+    favorites:PropTypes.array,
     style: PropTypes.object
 }
 
