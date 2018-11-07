@@ -24,6 +24,8 @@ const Header = () => (
     </header>
 );
 
+
+//console.log
 HeaderLink.propTypes = {
     children: propTypes.node,
 }
